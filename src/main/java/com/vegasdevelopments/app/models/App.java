@@ -14,10 +14,6 @@ public class App {
     public App() {
     }
 
-    public App(String json) {
-        this.json = json;
-    }
-
     public long getId() {
         return id;
     }

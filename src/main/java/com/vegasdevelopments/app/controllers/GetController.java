@@ -1,5 +1,6 @@
 package com.vegasdevelopments.app.controllers;
 
+import com.vegasdevelopments.app.repositories.DBRepository;
 import org.springframework.http.ResponseEntity;
 
 import java.util.HashMap;
@@ -20,7 +21,21 @@ public class GetController {
         return ResponseEntity.ok(author);
     }
 
-//    public static ResponseEntity<Map<String,Object>> getTable(String table) {
-//
-//    }
+    public static ResponseEntity<Map<String, Object>> getTable(String db, String table) throws Exception {
+        final Map<String, Object> body = DBRepository.getTable(db, table);
+        DBRepository.dispose();
+        if(body == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(body);
+    }
+
+    public static ResponseEntity<Map<String, Object>> getTableById(String db, String table, String id) throws Exception {
+        final Map<String, Object> body = DBRepository.getTableById(db, table, id);
+        DBRepository.dispose();
+        if(body == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(body);
+    }
 }

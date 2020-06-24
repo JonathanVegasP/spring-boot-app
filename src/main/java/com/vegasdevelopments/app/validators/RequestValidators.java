@@ -11,7 +11,7 @@ public class RequestValidators {
     private RequestValidators() {
     }
 
-    public static ResponseEntity<Map<String, Object>> responseEntity(Map<String, String> headers,Callable<ResponseEntity<Map<String, Object>>> callable) {
+    public static ResponseEntity<Map<String, Object>> requestValidator(Map<String, String> headers, Callable<ResponseEntity<Map<String, Object>>> callable) {
         try {
             switch (validateHeaders(headers)) {
                 case missing_db:
