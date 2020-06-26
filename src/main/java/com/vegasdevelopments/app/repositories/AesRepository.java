@@ -8,6 +8,7 @@ import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
 import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.util.Arrays;
+import java.util.Base64;
 
 public class AesRepository {
     private static byte[] key;
@@ -42,7 +43,7 @@ public class AesRepository {
         final IvParameterSpec ivParameterSpec = new IvParameterSpec(Arrays.copyOf(key, 16));
         final Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
         cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec, ivParameterSpec);
-        return new HexBinaryAdapter().marshal(cipher.doFinal(input.getBytes(StandardCharsets.UTF_8)));
+        return Base64.getEncoder().encodeToString(input.getBytes(StandardCharsets.UTF_8));
     }
 
     public static String decode(String input) throws Exception {
@@ -50,6 +51,6 @@ public class AesRepository {
         final IvParameterSpec ivParameterSpec = new IvParameterSpec(Arrays.copyOf(key, 16));
         final Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
         cipher.init(Cipher.DECRYPT_MODE, secretKeySpec, ivParameterSpec);
-        return new String(cipher.doFinal(new HexBinaryAdapter().unmarshal(input)), StandardCharsets.UTF_8);
+        return new String(cipher.doFinal(Base64.getDecoder().decode(input)), StandardCharsets.UTF_8);
     }
 }
