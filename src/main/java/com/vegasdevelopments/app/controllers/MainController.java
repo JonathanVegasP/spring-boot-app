@@ -12,7 +12,7 @@ import java.util.Map;
 @RestController
 @CrossOrigin
 public class MainController {
-    @Autowired(required = false)
+    @Autowired
     AppRepository repository;
 
     @GetMapping
