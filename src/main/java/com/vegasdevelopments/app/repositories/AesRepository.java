@@ -1,11 +1,14 @@
 package com.vegasdevelopments.app.repositories;
 
 import javax.crypto.Cipher;
+import javax.crypto.KeyGenerator;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
 import java.nio.charset.StandardCharsets;
+import java.security.SecureRandom;
 import java.util.Arrays;
+import java.util.Base64;
 
 public class AesRepository {
     private static byte[] key;
@@ -16,8 +19,9 @@ public class AesRepository {
 
     public static void init(String db) {
         try {
-            System.out.println(db);
-            key = MD5Repository.encode(db).getBytes(StandardCharsets.UTF_8);
+            final KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
+            keyGenerator.init(256, new SecureRandom(MD5Repository.encode(db).getBytes(StandardCharsets.UTF_8)));
+            key = keyGenerator.generateKey().getEncoded();
         } catch (Exception exception) {
             System.out.println(exception);
         }
@@ -28,22 +32,22 @@ public class AesRepository {
     }
 
     public static String encodeWithoutDecoder(String input) throws Exception {
-        final SecretKeySpec secretKeySpec = new SecretKeySpec(Arrays.copyOf(key,32), "AES");
+        final SecretKeySpec secretKeySpec = new SecretKeySpec(key, "AES");
         final Cipher cipher = Cipher.getInstance("AES");
         cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec);
         return new HexBinaryAdapter().marshal(cipher.doFinal(input.getBytes(StandardCharsets.UTF_8)));
     }
 
     public static String encode(String input) throws Exception {
-        final SecretKeySpec secretKeySpec = new SecretKeySpec(Arrays.copyOf(key,32), "AES");
+        final SecretKeySpec secretKeySpec = new SecretKeySpec(key, "AES");
         final IvParameterSpec ivParameterSpec = new IvParameterSpec(Arrays.copyOf(key, 16));
         final Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
         cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec, ivParameterSpec);
-        return new HexBinaryAdapter().marshal(input.getBytes(StandardCharsets.UTF_8));
+        return new HexBinaryAdapter().marshal(cipher.doFinal(input.getBytes(StandardCharsets.UTF_8)));
     }
 
     public static String decode(String input) throws Exception {
-        final SecretKeySpec secretKeySpec = new SecretKeySpec(Arrays.copyOf(key,32), "AES");
+        final SecretKeySpec secretKeySpec = new SecretKeySpec(key, "AES");
         final IvParameterSpec ivParameterSpec = new IvParameterSpec(Arrays.copyOf(key, 16));
         final Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
         cipher.init(Cipher.DECRYPT_MODE, secretKeySpec, ivParameterSpec);
