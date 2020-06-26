@@ -57,7 +57,7 @@ public class DBRepository {
         final Optional<Map<String, Object>> result = json
                 .get(table)
                 .stream()
-                .filter(map -> id.equalsIgnoreCase(Long.toString((long) map.get("id"))))
+                .filter(map -> id.equalsIgnoreCase( (String) map.get("id")))
                 .findFirst();
         if (!result.isPresent()) {
             return null;
