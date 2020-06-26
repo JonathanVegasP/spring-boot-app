@@ -8,6 +8,7 @@ public class App {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
+    @Lob
     private String json;
 
     public App() {
