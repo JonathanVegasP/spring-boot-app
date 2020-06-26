@@ -28,14 +28,14 @@ public class AesRepository {
     }
 
     public static String encodeWithoutDecoder(String input) throws Exception {
-        final SecretKeySpec secretKeySpec = new SecretKeySpec(key, "AES");
+        final SecretKeySpec secretKeySpec = new SecretKeySpec(Arrays.copyOf(key,32), "AES");
         final Cipher cipher = Cipher.getInstance("AES");
         cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec);
         return new HexBinaryAdapter().marshal(cipher.doFinal(input.getBytes(StandardCharsets.UTF_8)));
     }
 
     public static String encode(String input) throws Exception {
-        final SecretKeySpec secretKeySpec = new SecretKeySpec(key, "AES");
+        final SecretKeySpec secretKeySpec = new SecretKeySpec(Arrays.copyOf(key,32), "AES");
         final IvParameterSpec ivParameterSpec = new IvParameterSpec(Arrays.copyOf(key, 16));
         final Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
         cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec, ivParameterSpec);
@@ -43,7 +43,7 @@ public class AesRepository {
     }
 
     public static String decode(String input) throws Exception {
-        final SecretKeySpec secretKeySpec = new SecretKeySpec(key, "AES");
+        final SecretKeySpec secretKeySpec = new SecretKeySpec(Arrays.copyOf(key,32), "AES");
         final IvParameterSpec ivParameterSpec = new IvParameterSpec(Arrays.copyOf(key, 16));
         final Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
         cipher.init(Cipher.DECRYPT_MODE, secretKeySpec, ivParameterSpec);
