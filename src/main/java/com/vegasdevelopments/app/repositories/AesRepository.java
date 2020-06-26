@@ -46,7 +46,7 @@ public class AesRepository {
     }
 
     public static String decode(String input) throws Exception {
-        final SecretKeySpec secretKeySpec = new SecretKeySpec(Arrays.copyOf(key, 32), "AES");
+        final SecretKeySpec secretKeySpec = new SecretKeySpec(key, "AES");
         final IvParameterSpec ivParameterSpec = new IvParameterSpec(Arrays.copyOf(key, 16));
         final Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
         cipher.init(Cipher.DECRYPT_MODE, secretKeySpec, ivParameterSpec);
