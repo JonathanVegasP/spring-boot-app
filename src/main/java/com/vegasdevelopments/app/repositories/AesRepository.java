@@ -8,7 +8,6 @@ import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
 import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.util.Arrays;
-import java.util.Base64;
 
 public class AesRepository {
     private static byte[] key;
@@ -22,6 +21,7 @@ public class AesRepository {
             final KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
             keyGenerator.init(256, new SecureRandom(MD5Repository.encode(db).getBytes(StandardCharsets.UTF_8)));
             key = keyGenerator.generateKey().getEncoded();
+            System.out.println(Arrays.toString(key));
         } catch (Exception exception) {
             System.out.println(exception);
         }
