@@ -51,6 +51,7 @@ public class AesRepository {
         final IvParameterSpec ivParameterSpec = new IvParameterSpec(Arrays.copyOf(key, 16));
         final Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
         cipher.init(Cipher.DECRYPT_MODE, secretKeySpec, ivParameterSpec);
+        
         return new String(cipher.doFinal(Base64.getDecoder().decode(input)), StandardCharsets.UTF_8);
     }
 }
