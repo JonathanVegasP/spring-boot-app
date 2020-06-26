@@ -34,6 +34,7 @@ public class DBRepository {
             return null;
         }
         AesRepository.init(db);
+        System.out.println(app.get().getJson());
         final Map<String, Object> json = new ObjectMapper().readValue(AesRepository.decode(app.get().getJson()), HashMap.class);
         AesRepository.dispose();
         if (!json.containsKey(db)) {
@@ -121,6 +122,7 @@ public class DBRepository {
         value.add(requestBody);
         values.put(table, value);
         json.put(db, values);
+        System.out.println(AesRepository.encode(mapper.writeValueAsString(json)));
         app.setJson(AesRepository.encode(mapper.writeValueAsString(json)));
         AesRepository.dispose();
         repository.save(app);
