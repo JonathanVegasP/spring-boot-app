@@ -16,6 +16,7 @@ public class AesRepository {
 
     public static void init(String db) {
         try {
+            System.out.println(db);
             key = MD5Repository.encode(db).getBytes(StandardCharsets.UTF_8);
         } catch (Exception exception) {
             System.out.println(exception);
