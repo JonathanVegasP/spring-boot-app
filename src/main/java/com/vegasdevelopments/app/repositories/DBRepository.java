@@ -77,7 +77,7 @@ public class DBRepository {
         final Map<String, Object> body = new HashMap<>();
         AesRepository.init(db);
         if (app.getJson() != null) {
-            json.putAll(mapper.readValue(app.getJson(), HashMap.class));
+            json.putAll(mapper.readValue(AesRepository.decode(app.getJson()), HashMap.class));
         }
         if (json.containsKey(db)) {
             values.putAll((HashMap) json.get(db));
