@@ -34,7 +34,7 @@ public class DBRepository {
             return null;
         }
         AesRepository.init(db);
-        System.out.println(app.get().getJson());
+        System.out.println(AesRepository.decode(app.get().getJson()));
         final Map<String, Object> json = new ObjectMapper().readValue(AesRepository.decode(app.get().getJson()), HashMap.class);
         AesRepository.dispose();
         if (!json.containsKey(db)) {
