@@ -18,10 +18,7 @@ public class AesRepository {
 
     public static void init(String db) {
         try {
-            final KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
-            keyGenerator.init(256, new SecureRandom(MD5Repository.encode(db).getBytes(StandardCharsets.UTF_8)));
-            key = keyGenerator.generateKey().getEncoded();
-            System.out.println(Arrays.toString(key));
+           key = MD5Repository.encode(db).getBytes(StandardCharsets.UTF_8);
         } catch (Exception exception) {
             System.out.println(exception);
         }
