@@ -1,7 +1,5 @@
 package com.vegasdevelopments.app.models;
 
-import com.vegasdevelopments.app.tools.PGJsonB;
-
 import javax.persistence.*;
 import java.util.Map;
 
@@ -11,7 +9,7 @@ public class App {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @Convert(converter = PGJsonB.class)
+    @Column(columnDefinition = "jsonb")
     private Map<String,Object> json;
 
     public App() {
