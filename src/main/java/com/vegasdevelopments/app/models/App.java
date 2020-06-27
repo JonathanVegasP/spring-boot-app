@@ -8,7 +8,7 @@ public class App {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @Lob
+    @Column(columnDefinition = "jsonb")
     private String json;
 
     public App() {

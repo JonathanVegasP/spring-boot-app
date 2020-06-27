@@ -1,5 +1,6 @@
 package com.vegasdevelopments.app.repositories;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vegasdevelopments.app.models.App;
 import com.vegasdevelopments.app.validators.UserValidators;
 
@@ -33,7 +34,7 @@ public class DBRepository {
             return null;
         }
         AesRepository.init(db);
-        final Map<String, Object> json = app.get().getJson();
+        final Map<String, Object> json = new ObjectMapper().readValue(app.get().getJson(),HashMap.class);
         AesRepository.dispose();
         if (!json.containsKey(db)) {
             return null;
@@ -73,7 +74,7 @@ public class DBRepository {
         final List<Map<String, Object>> value = new ArrayList<>();
         final Map<String, Object> body = new HashMap<>();
         if (app.getJson() != null) {
-            json.putAll(app.getJson());
+            json.putAll(new ObjectMapper().readValue(app.getJson(),HashMap.class));
         }
         if (json.containsKey(db)) {
             values.putAll((HashMap) json.get(db));
@@ -120,7 +121,7 @@ public class DBRepository {
         value.add(requestBody);
         values.put(table, value);
         json.put(db, values);
-        app.setJson(json);
+        app.setJson(new ObjectMapper().writeValueAsString(json));
         repository.save(app);
         body.put(table, requestBody);
         return body;
