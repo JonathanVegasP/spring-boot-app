@@ -1,12 +1,10 @@
 package com.vegasdevelopments.app.repositories;
 
 import javax.crypto.Cipher;
-import javax.crypto.KeyGenerator;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
 import java.nio.charset.StandardCharsets;
-import java.security.SecureRandom;
 import java.util.Arrays;
 
 public class AesRepository {
@@ -16,12 +14,8 @@ public class AesRepository {
 
     }
 
-    public static void init(String db) {
-        try {
-           key = MD5Repository.encode(db).getBytes(StandardCharsets.UTF_8);
-        } catch (Exception exception) {
-            System.out.println(exception);
-        }
+    public static void init(String db) throws Exception {
+        key = MD5Repository.encode(db).getBytes(StandardCharsets.UTF_8);
     }
 
     public static void dispose() {

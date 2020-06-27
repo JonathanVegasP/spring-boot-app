@@ -22,8 +22,8 @@ public class MainController {
 
     @GetMapping({"/api/{table}", "/api/{table}/{id}"})
     public ResponseEntity<Map<String, Object>> getTable(@RequestHeader Map<String, String> headers, @PathVariable Map<String, String> path) {
-        DBRepository.init(repository);
         return RequestValidators.requestValidator(headers, () -> {
+            DBRepository.init(repository);
             if (!path.containsKey("id")) {
                 return GetController.getTable(headers.get("db"), path.get("table"));
             }
@@ -33,7 +33,9 @@ public class MainController {
 
     @PostMapping("/api/{table}")
     public ResponseEntity<Map<String, Object>> postTable(@RequestHeader Map<String, String> headers, @PathVariable String table, @RequestBody Map<String, Object> body) {
-        DBRepository.init(repository);
-        return RequestValidators.requestValidator(headers, () -> PostController.postTable(headers.get("db"), table, body));
+        return RequestValidators.requestValidator(headers, () -> {
+            DBRepository.init(repository);
+            return PostController.postTable(headers.get("db"), table, body);
+        });
     }
 }
