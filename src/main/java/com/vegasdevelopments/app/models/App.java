@@ -1,7 +1,6 @@
 package com.vegasdevelopments.app.models;
 
 import javax.persistence.*;
-import java.nio.charset.StandardCharsets;
 
 @Entity
 public class App {
@@ -9,8 +8,8 @@ public class App {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @Column(columnDefinition = "jsonb")
-    private byte[] json;
+    @Lob
+    private String json;
 
     public App() {
     }
@@ -24,10 +23,10 @@ public class App {
     }
 
     public String getJson() {
-        return new String(json, StandardCharsets.UTF_8);
+        return json;
     }
 
     public void setJson(String json) {
-        this.json = json.getBytes(StandardCharsets.UTF_8);
+        this.json = json;
     }
 }

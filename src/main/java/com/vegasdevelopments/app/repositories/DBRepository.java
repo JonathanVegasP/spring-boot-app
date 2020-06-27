@@ -34,7 +34,7 @@ public class DBRepository {
             return null;
         }
         AesRepository.init(db);
-        final Map<String, Object> json = new ObjectMapper().readValue(app.get().getJson(),HashMap.class);
+        final Map<String, Object> json = new ObjectMapper().readValue(AesRepository.encode(app.get().getJson()),HashMap.class);
         AesRepository.dispose();
         if (!json.containsKey(db)) {
             return null;
@@ -73,8 +73,9 @@ public class DBRepository {
         final Map<String, Object> values = new HashMap<>();
         final List<Map<String, Object>> value = new ArrayList<>();
         final Map<String, Object> body = new HashMap<>();
+        AesRepository.init(db);
         if (app.getJson() != null) {
-            json.putAll(new ObjectMapper().readValue(app.getJson(),HashMap.class));
+            json.putAll(new ObjectMapper().readValue(AesRepository.decode(app.getJson()),HashMap.class));
         }
         if (json.containsKey(db)) {
             values.putAll((HashMap) json.get(db));
@@ -82,7 +83,6 @@ public class DBRepository {
         if (values.containsKey(table)) {
             value.addAll((List) values.get(table));
         }
-        AesRepository.init(db);
         if (table.equalsIgnoreCase("user")) {
             if (!requestBody.containsKey("email")) {
                 body.put("error", "email key is required");
@@ -117,11 +117,11 @@ public class DBRepository {
                             .toString(System.currentTimeMillis())
                             .getBytes(StandardCharsets.UTF_8)));
         }
-        AesRepository.dispose();
         value.add(requestBody);
         values.put(table, value);
         json.put(db, values);
-        app.setJson(new ObjectMapper().writeValueAsString(json));
+        app.setJson(AesRepository.encode(new ObjectMapper().writeValueAsString(json)));
+        AesRepository.dispose();
         repository.save(app);
         body.put(table, requestBody);
         return body;
