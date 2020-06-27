@@ -34,7 +34,7 @@ public class DBRepository {
             return null;
         }
         AesRepository.init(db);
-        final Map<String, Object> json = new ObjectMapper().readValue(AesRepository.encode(app.get().getJson()),HashMap.class);
+        final Map<String, Object> json = new ObjectMapper().readValue(AesRepository.decode(app.get().getJson()),HashMap.class);
         AesRepository.dispose();
         if (!json.containsKey(db)) {
             return null;
@@ -126,4 +126,17 @@ public class DBRepository {
         body.put(table, requestBody);
         return body;
     }
+
+//    public static Map<String,Object> putTable(String db, String table, Map<String,Object> requestBody) {
+//        final Optional<App> required = getApp();
+//        final App app = required.orElseGet(App::new);
+//        final Map<String, Object> json = new HashMap<>();
+//        final Map<String, Object> values = new HashMap<>();
+//        final List<Map<String, Object>> value = new ArrayList<>();
+//        final Map<String, Object> body = new HashMap<>();
+//        if(app.getJson() == null) {
+//            return  null;
+//        }
+//
+//    }
 }
