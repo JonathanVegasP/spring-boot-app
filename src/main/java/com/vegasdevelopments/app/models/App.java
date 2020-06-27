@@ -1,7 +1,6 @@
 package com.vegasdevelopments.app.models;
 
 import javax.persistence.*;
-import java.util.Map;
 
 @Entity
 public class App {
@@ -9,8 +8,8 @@ public class App {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @Column(columnDefinition = "jsonb")
-    private Map<String,Object> json;
+    @Lob
+    private String json;
 
     public App() {
     }
@@ -23,11 +22,11 @@ public class App {
         this.id = id;
     }
 
-    public Map<String,Object> getJson() {
+    public String getJson() {
         return json;
     }
 
-    public void setJson(Map<String,Object> json) {
+    public void setJson(String json) {
         this.json = json;
     }
 }
